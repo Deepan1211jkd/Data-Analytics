@@ -1,0 +1,184 @@
+Jupyter Note Shortcuts(https://cheatography.com/weidadeyue/cheat-sheets/jupyter-notebook/)
+
+#Press B = Insert cell down
+#Press D twice = Delete the cell
+#Esc = Command mode
+#Press F = Find and Replace
+#Ctrl + Enter = Run
+#Shift + Enter = Run and move to next cell
+# \n = new line inside print
+# '#' = to command a single line
+# Ctrl + / = Commenting and Uncommenting muliple line
+
+
+
+Terminologies
+
+Variable Types = bool,int,str,float
+Data Types = list -> [], tuples -> (), Dict -> (key,value)
+# lists
+x4 = [x1, x2, x3]
+# tuples
+x5 = (x3, x2, x1)
+#Dict
+runs_scored = {'Rohit':34, 'Dhawan':53, 'Kohli':60}
+
+Data Structure
+
+
+Inbuilt Function
+
+=> sum()
+=> min()
+=> max()
+=> 61//4 -> gives only integer value
+=> 2**8 -> gives power of 2 
+=> 63%4 -> gives the remainder
+=> 63/4 -> gives the quotient
+
+
+
+
+String
+
+* Indexing starts from 0
+Syntax
+String [staring index : Ending index(n-1)]
+String [0,(n-1)]
+String [negative values] -> gives the string char in backwards
+String.replace('','')
+
+
+if else elif Statement
+
+if condition : 
+	print() -> must give 4 spaces or tab
+elif condition :
+	print() -> must give 4 spaces or tab
+else :
+	print() -> must give 4 spaces or tab
+
+
+
+For Loop
+
+# for i in range(1, 100, 2):
+
+# range ==> (min, max, increment) default incr = 1, default min = 0
+# range (1, 100)  ----> 1, 2, ... 99
+# range(100) = range(0, 100, 1) ----> 0, 1, 2, ... 99
+# range(1, 101) ---> 1, 2, 3 .... 100
+
+
+Pandas
+
+#import pandas as pd
+support CSV, Excel, JSON
+use pd.Dataframe 
+pd.read_csv['']
+pd.read_html['']
+pd.read_excel['']
+pd.to_csv['.csv'] -> we can convert dataFrame to csv also
+pd.to_excel['.xlsx']
+# show the data type of each columns
+df.dtypes()
+
+# show the first columns of the csv , dataframes
+df.head()
+
+# show the last columns of the csv , dataframes
+df.tail()
+
+#to convert object to int
+df['column'] = df['column'].astype(str).astype(int)
+
+#to read specofic sheet in excel
+import pandas as pd
+df = pd.read_excel('users.xlsx', sheet_name = [0,1,2])
+df = pd.read_excel('users.xlsx', sheet_name = ['User_info','compound'])
+df = pd.read_excel('users.xlsx', sheet_name = None) # read all sheet
+
+#To tabulate dataFrame
+from tabulate import tabulate
+print(tabulate (df, header = 'keys', tablefmt='psql'))
+
+
+#to rename a column
+df = df.rename(columns={"from":"to"})
+
+#to check nan in column
+from numpy import *
+isnan(x)
+
+#use lambda in df
+df['column']= df.isWide.apply(lambda x : 0 if isnan(x) else x)
+x->denotes the column
+
+
+#to sort 
+df.sort_values(by = 'column_name' , ascending = True) - ascending order
+df.sort_values(by = 'column_name' , ascending = False) - descending order
+
+
+#to convert date format to year
+df['ColumnName'] = pd.to_datetime(df['ColumnName']) - Same column name
+df['Year'] = df['Innings Date'].dt.year
+
+
+
+#to show image in jupyter notebook
+from matplotlib import image
+img = image.imread("download.png")
+plt.figure(figsize=(12,8) , dpi=200)
+plt.imshow(img)
+plt.show()
+
+#to sum a row
+df[['calc_SR' ,'calc_RPI','calc_BPD','calc_BPB' ]].sum(axis=0))
+
+#to sum a column
+df[['calc_SR' ,'calc_RPI','calc_BPD','calc_BPB' ]].sum(axis=1))
+
+#to reset the index
+df.reset_index()
+df.reset_index(inplace=True, drop=True)
+
+#to delete a column
+df.drop('column_name' , axis = 1)
+
+#to merge a specific column
+df = pd.merge(df,df2[['Key_Column','Target_Column']],on='Key_Column', how='left') 
+
+#to split a decimal value
+df = pd.DataFrame({'col1':[2.123, 3.557, 0.123456]})
+df[['whole number', 'decimal']] = df['col1'].astype(str).str.split('.').apply(pd.Series)
+
+#to use split in pandas
+df = pd.DataFrame({'Name': ['John_Larter', 'Robert_Junior', 'Jonny_Depp'],
+                    'Age':[32, 34, 36]})
+df.Name.apply(lambda x: pd.Series(str(x).split("_")))
+
+
+#to get the number of unique element
+df.columnName.nunique()
+
+
+#to get aggregate information of the dataframe
+df.describe()
+
+#to get count of different names in a column
+df.columnName.value_counts()
+
+#to get unique count of names in column
+df.column/name.nunique()
+
+#to get total no.of data count and total no. of columns
+df.shape
+
+#to get multiple csv file as a list
+use glob
+import glob
+all_files = glob.glob("./DATA/*.csv")
+
+#to combine all csv files into single master csv
+df = pd.concat((pd.read_csv(f , header = 0) for f in all_files))
