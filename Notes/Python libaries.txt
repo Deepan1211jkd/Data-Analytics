@@ -1,0 +1,106 @@
+Python Libraries
+
+1. Tensor Flow
+->Data in tensor flow are represented as tensor, which are multidimensional arrays
+
+
+Features
+->Better computational graph visualization
+->In neural machine translation, reduces error by 50-60%
+->parallel computing to execute complex models
+->seamless library management
+
+Application 
+->Speech/image recognition
+->Text based application
+->Time series
+->Video detection
+
+
+2. NUMPY
+->General purpose array processing package
+->Numpy is the fundamental package for numerical computation
+with python, it contains a powerful N-dimensionalarray object
+
+
+Features
+-> Providesfast precomplied functions for numerical routines
+->array oriented computing for better efficiency
+->support object-oriented approach
+->compact and faster computations with vectorization
+
+
+
+Application
+-> Extensively used in data analysis along with pandas
+->Creating powerful N-dimensional array
+->Forms he base of other libraries like scipy,scikit-learn
+->replacement of matlab when used along with scipy and matplotlib
+
+
+3.SCIPY - Scientific Python
+->It provides many user-friendly and efficient routines for scientific computation, 
+it extends Numpy
+
+
+Features
+-> A collection of mathematical algorithm and scientific fuynction
+built on the numpy extension of python
+->High Level commands and classes for manipulating and visualizing data
+->Multi-dimensional image processing with scipy.ndimage
+->Includes function for computing inregrals numerically,
+solving differential equation, optimization, etc
+
+
+Application
+->Multi-dimensional image operation
+->Solving differential equations and fourier transform
+->Optimization algorithms
+->Lnear algebra
+
+
+4.Pandas
+-> Python data analysis Library
+->It provides fast, flexible and epressive data structure designed to work with
+structures data easily and intuitively
+
+
+Features
+->Eloquent syntax and rich functionality
+-> Apply() enables you to run a function across series of data
+->High level abstraction
+-> Contains high level data structure and manipulation toolss
+
+Application
+->General data wRangling
+->ETL jobs and data storage
+->Used in wide variety of academic and commercial
+domains, including statistics etc
+->Time series-specific functionality
+
+
+5.Matplotlib
+-> plotting library
+->used for visualization
+->It provides an object oriented API embedded plots into application
+
+Features
+-> AS usable as matlab with an advantage of being free and
+open-source
+-> Supports dozens of backends and other types
+-> Pandas itself can b used ass Wrapper around matplotlib's API
+-> Smaller memory consumption and better runtime behaviour
+
+Appication
+->Correlation analysis of variables
+->visiualize 95% confidence intervals of the models
+->Outlier detection
+->visualizing distribution to gain instant insights
+
+
+Other libraries
+=>Keras
+=>Scikit
+=>Seaborn
+
+
