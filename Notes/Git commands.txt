@@ -1,0 +1,84 @@
+#Clone a repository
+git clone https://github.com/Deepan1211jkd/Deepan1211jkd.git
+
+#get updated changes from git
+git pull
+
+#to check branches available
+git branch
+
+#to create a new branch
+git branch -c branch_name
+or
+git chackout -b branch_name
+
+#to switch new branch
+git checkout new_branch_name
+
+#to check changed files in branch
+git status
+
+# LF will be replaced by CRLF
+git config --global core.autocrlf true (if we want to work in nmultiple OS)
+git config --global core.autocrlf false (if we want to work in windows alone)
+git config --global core.eol native
+
+another way 
+create .gitattributes file(text file)
+in the file tyep the below lines
+* text = auto
+after made this change commit the file
+
+
+#to remove file from staging area
+git reset --hard
+
+#to give username who committed(author)
+$ git config --global user.name "Deepan12jkd"
+git config --global user.email deepan.jkd@gmail.com
+
+#to commit our changes
+we need to add the file by
+git add file_name(it will be shown in git status)
+git add .(add all the changed files)
+git add .filetype(eg: .java -> add all the changed java files)
+
+
+#to commit
+git commit -m "commit message"
+
+#to move to git 
+git push orgin branch name
+or
+git push
+
+
+#to merge with another branch
+git merge branch1 branch2
+
+#to merge with another branch(master from feature baranch)
+git rebase master
+
+#to change previous commit message
+git commit -amend -m "new message"
+
+#to remove file from staged files
+git rm --cached file name
+git rm -h (to know more rm command)
+
+#to remove all the files from staged files
+git reset --hard  
+
+
+What is the difference between merging and rebasing in Git?
+	Merging is a safe option that preserves the entire history of your repository, 
+while rebasing creates a linear history by moving your feature branch onto the 
+tip of master. This use of git rebase is similar to a local cleanup 
+(and can be performed simultaneously), but in the process it incorporates 
+those upstream commits from master.
+
+=>If you want to see the history completely same as it happened, you should use merge. 
+Merge preserves history whereas rebase rewrites it.
+=>Merging adds a new commit to your history
+=>Rebasing is better to streamline a complex history, you are able to change the commit 
+history by interactive rebase.
