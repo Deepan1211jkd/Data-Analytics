@@ -182,3 +182,49 @@ all_files = glob.glob("./DATA/*.csv")
 
 #to combine all csv files into single master csv
 df = pd.concat((pd.read_csv(f , header = 0) for f in all_files))
+
+#to impute na with constant values
+df[column_names].replace(np.nan , 100)
+
+#to impute the missing values with mean
+df[column_names].replace(np.nan, df[column_names].mean())
+
+#to impute the missing values with median
+df[column_names].fillna(df[column_names].median())
+
+#to impute missing values with forward fill - (replace with above value)
+df[column_names].fillna(df[column_names].ffill())
+
+
+#to impute missing values with backward fill - (replace with below value)
+df[column_names].fillna(df[column_names].bfill())
+
+
+#to check nan in dataframe
+df.isna.sum() or df.isnull.sum()
+
+#to check zeros in dataframe
+(df[column_name == 0]).sum()
+
+#to Impute nan using interpolation method
+df.fillna(df.interpolate()) or df.interpolate()
+
+
+#to impute nan using KNNImputer
+from sklearn.impute import KNNImputer
+
+imputer = KNNImputer(n_neighbors=2)
+pd.DataFrame(imputer.fit_transform(df),columns=('Temperature','Humidity'))
+
+n_neighbors: number of data points to include closer to the missing value.
+metric: the distance metric to be used for searching.
+values – {nan_euclidean. callable} by default – nan_euclidean
+weights: to determine on what basis should the neighboring values be treated
+values -{uniform , distance, callable} by default- uniform.
+
+
+#concatenating df1 and df2 along rows
+vertical_concat = pd.concat([df1, df2], axis=0)
+ 
+# concatenating df3 and df4 along columns
+horizontal_concat = pd.concat([df3, df4], axis=1)

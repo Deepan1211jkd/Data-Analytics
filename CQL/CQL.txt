@@ -1,0 +1,214 @@
+CAP Theorm
+->Consistant
+->Available
+->Partition Tolerant 
+
+cassandra focus on available and partition #Tolerant but also not have bad consistency
+
+Installation
+
+
+
+CREATE KEYSPACE
+CREATE KEYSPACE test_keyspace with replication = {'class': 'SimpleStrategy','replication_fac#Tor' :'1'} AND durable_writes = 'true';
+
+
+#To Delete the keyspace
+Drop KEYSPACE keyspace_name
+
+
+#To use a keyspace
+USE keyspace_name
+
+#To create table with primary key
+CREATE TABLE employee_by_id (id int PRIMARY KEY ,name text ,position text );
+
+#To create table with partition key and cluster column
+CREATE TABLE employee_by_car_make (car_make text , id int , car_model text, PRIMARY KEY(car_make,id));
+
+#To delete a table
+DROP TABLE table_name
+
+
+#To describe the tables
+DESCRIBE TABLES
+
+
+#To describe a particular table
+DESCRIBE TABLE table_name
+
+#To create table with multiple partition key and cluster column
+CREATE TABLE employee_by_car_make_and_model (car_make text , car_model text, id int , name text, PRIMARY KEY((car_make,car_model),id));
+
+#TO check the consistency level
+CONSISTENCY
+
+#TO change the consistency level
+CONSISTENCY QUORUM or CONSISTENCY ONE
+Note: Default consistency level is ONE
+
+#To insert into a table
+INSERT INTO table_name(col_nm1,col_nm2,col_nm3) VALUES (1,'Prasanna','Manager');
+
+#To select a value from a table
+select * from table_name where partition_key or primary_key = value order by cluster_column
+
+#To delete a table
+Drop table table_name
+
+#To Update a column_value from a table
+ UPDATE table_name SET col_name = 'Value' where car_make = 'BMW' AND car_model = 'Sedan' AND id = 3;
+Note : where condition we need to use partition key or cluster column and we cannot update the partition and primary keys
+
+#To auto delete the updated col we need to use TTL
+ UPDATE employee_by_car_make_and_model TTL 60 SET name = 'Aravind' where car_make = 'BMW' AND car_model = 'Sedan' AND id = 3;
+Note : we need to specify time in seconds after TTL
+
+#To update list in a column
+ Update employee_by_id set phone_number ={'98976543234', '7703402345'} where id = 2
+ 
+
+#To create unique_id in a table 
+create table employee_by_uuid(id uuid PRIMARY KEY , first_name text, last_name text);
+Insert into employee_by_uuid (id, first_name, last_name) Values(uuid(), 'Deepan', 'J K');
+
+OR
+create table employee_by_timeuuid(id timeuuid PRIMARY KEY , first_name text, last_name text);
+Insert into employee_by_timeuuid (id, first_name, last_name) Values(now(), 'Deepan', 'J K');
+
+#To use Counter
+create table purchase_by_uuid(id uuid PRIMARY KEY , purchase counter);
+Update purchase_by_uuid set purchase = purchase+1 where id=uuid();
+
+
+#To import csv into table
+->first we need to create a table as same as columns in csv
+-> COPY test_csv_import (Name,Team,Runs,Balls,Not_Out) FROM 'E:/Data Analytics/workshop/Sample_CSV.csv' With DELIMITER = ',' AND HEADER=TRUE;
+
+#to Export csv from table
+ COPY test_csv_import to 'E:/Data Analytics/workshop/test_export2.csv' WITH DELIMITER = ',' AND HEADER = True;
+COPY test_csv_import(name,team,runs,balls) to 'E:/Data Analytics/workshop/test_export1.csv' WITH DELIMITER = ',';
+
+#to create materialized view 
+create MATERIALIZED VIEW test_keyspace.test_csv_new
+                 ... As SELECT * from test_keyspace.test_csv_import
+                 ... where team is not null AND
+                 ... name is not null AND
+                 ... balls is not null
+                 ... PRIMARY KEY(team,name,balls);
+
+
+#peer to peer Architecture
+Cassandra's peer-to-peer approach Unlike either monolithic or master-slave designs, 
+Cassandra makes use of an entirely peer-to-peer architecture. All nodes in a 
+Cassandra cluster can accept reads and writes, no matter where the data being 
+written or requested actually belongs in the cluster.
+->sharding
+
+
+#Snitch
+A snitch determines which datacenters and racks nodes belong to. 
+They inform Cassandra about the network topology so that requests 
+are routed efficiently and allows Cassandra to distribute replicas by 
+grouping machines into datacenters and racks.
+->Simple snitch or default snitch
+-> Property file Snitch (IP address, data center, rack)
+-> Gossiping property file snitch (data center, rack)
+
+Dynamic Snitch
+->every snitch uses the dynamic snitch to monitor the performance of all the nodes in a cluster
+
+#Gossip Protocol
+two types of data
+
+-> Heartbeat state -> information about when the node started and timestamp 
+for this gossip session
+-> Application state -> contains current status of the node(what data center,rack, schema,
+severity, Load that the current node under(disk pressure))
+combination of load and severity gives the current performace of the node.
+-> gossip session of two nodes, node 1 initiates gossip session with node 2
+it was sent data all other nodes(IP,Heartbeat state ->time stamp, application state->health)
+
+
+#Cassandra Write Path
+Cassandra can store data in
+->Memory(memTable)
+->Disk(commit log)
+
+*when data is written in both memtable and commit log then client will receive
+success ,then it is durable
+*when node is lose,  we will lose memtable but commit log will remain
+*memtable will maintain the order based on clustering column but  commit log will not maintain 
+the order
+*entire memtable , that store in the disk is known as flushing
+*memtable in disk is known as sstable
+*Once the flushing is completed memtable and commit log will be erased and new set 
+commit log and memtable will begin
+*sstable will be immutable
+*sstable is durable store
+
+
+#Cassandra read Path
+Data store in memtable and sstable, when read command is executed it will
+return a recent time stamp data from memtable or sstable
+
+Eg :
+USA 3 (100) - memtable
+USA 5 (110) - memtable
+USA 3 (93)  - sstable 
+USA 10(120) - memtable
+
+It will return most recent timestamp data (USA 3 (100) - memtable)
+when read command execute for USA 3
+
+->SStable
+SS table store data in orderly manner(Byte index).
+
+Steps to search
+*Bloom Filter
+It will tell us that the data we looking for is 100% not in SStable
+or also could tell us might be in the sstable particularly in high level
+of confidence.
+
+*Key cache
+It stores the byte location where data begins
+It holds frequently access data
+
+*Partition Summary
+It helps when partition index grows bigger, it groups the indices together
+so that we can begin with index of that group
+
+
+*Partition Index
+It maintains full set of all parts of our data and bytes that begin 
+
+
+
+#Compaction
+How cassandra consolidates two SStables
+
+*It consolidate two sstables and store in new sstable
+*It stores data with recent timestamp
+*tombstone
+*Operation done in memory
+*after consolidate completes, sstable data store in disk and delete the 
+SStables
+
+
+#Datastax Python Driver
+pip install cassandra-driver
+
+import pandas as pd
+from cassandra.cluster import Cluster
+
+
+cluster=Cluster(['127.0.0.1'],port=9042)
+session = cluster.connect('test_keyspace')
+
+from cassandra.query import dict_factory
+
+session_row_factory = dict_factory
+
+rows = session.execute('select * from test_csv_import')
+df= pd.DataFrame(rows)
+df
